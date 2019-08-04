@@ -9,14 +9,14 @@ export default function Card({ data, index, listIndex }) {
     const ref = useRef();
     const { move } = useContext(BoardContext);
 
-    const[{isDragging}, dragRef] = useDrag({
+    const [{isDragging}, dragRef] = useDrag({
         item: { type: 'CARD', index, listIndex },
         collect: monitor => ({
             isDragging: monitor.isDragging(),
         }),
     });
 
-    const[, dropRef] = useDrop({
+    const [, dropRef] = useDrop({
         accept: 'CARD',
         // item: qual card esta sendo arrastado
         // monitor: informacoes do card
@@ -29,7 +29,7 @@ export default function Card({ data, index, listIndex }) {
 
             if(draggedIndex === targetIndex && draggedListIndex === targetListIndex) return;
 
-            const targetSize = ref.current.getBoudingClientRect();
+            const targetSize = ref.current.getBoundingClientRect();
             const targetCenter = (targetSize.bottom - targetSize.top) / 2;
 
             const draggedOffSet = monitor.getClientOffset();
@@ -47,7 +47,7 @@ export default function Card({ data, index, listIndex }) {
         }
     })
 
-    dragRef(dropRef());
+    dragRef(dropRef(ref));
 
     return (
         <Container ref={ref} isDragging={isDragging}>
